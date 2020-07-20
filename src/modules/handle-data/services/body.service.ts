@@ -28,30 +28,36 @@ export class BodyService {
 
   static convertTextToMesinUsers(text: string, mesin: Mesin): MesinUserDto[] {
     const rows = text.split('\n');
-    const result = [];
+    const users: MesinUserDto[] = [];
 
     if (rows) {
       rows.forEach((row) => {
         const cols = row.split('\t');
-        result.push(MappingService.toUser(cols, mesin));
+        const user = MappingService.toUser(cols, mesin);
+        const idxExists = users.findIndex((val) => val.pin === user.pin);
+        if (idxExists >= 0) {
+          users[idxExists] = user;
+        } else {
+          users.push(user);
+        }
       });
     }
 
-    return result;
+    return users;
   }
 
   static convertTextToMesinLogs(text: string, mesin: Mesin): MesinLogDto[] {
     const rows = text.split('\n');
-    const result = [];
+    const logs = [];
 
     if (rows) {
       rows.forEach((row) => {
         const cols = row.split('\t');
-        result.push(MappingService.toLog(cols, mesin));
+        logs.push(MappingService.toLog(cols, mesin));
       });
     }
 
-    return result;
+    return logs;
   }
 
   static convertTextToMesinInfo(text: string): MesinInfoDto {
@@ -65,8 +71,6 @@ export class BodyService {
       });
     }
 
-    const info = MappingService.toInfo(result);
-
-    return info;
+    return MappingService.toInfo(result);
   }
 }

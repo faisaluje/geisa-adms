@@ -1,21 +1,25 @@
 import express from 'express';
+import getRawBody from 'raw-body';
+import { ProcessDataService } from '../../../modules/handle-data/services/process-data.service';
+import { CommandService } from '../service/command.service';
 
 const router = express.Router();
 
 router.post('/iclock/devicecmd', async (req, res) => {
   console.log('iclock/devicecmd', req.query);
+  const sn: string = req.query.SN as string;
 
-  // if (req.readable) {
-  //   const raw = await rawBody(req);
-  //   const text = raw.toString().trim();
+  CommandService.deleteCommands(sn);
 
-  //   let content = text;
-  //   if (content.search('DeviceName=') >= 0) {
-  //     content = getDeviceInfo(plainToObj(text, toInfo));
-  //   }
+  if (req.readable) {
+    const raw = await getRawBody(req);
+    const text = raw.toString().trim();
 
-  //   console.log(content);
-  // }
+    let content = text;
+    if (content.search('DeviceName=') >= 0) {
+      ProcessDataService.updateMesinInfo(content);
+    }
+  }
 
   res.header('Content-Type', 'text/plain').send('OK');
 });

@@ -40,4 +40,19 @@ export class MesinService {
       this.setMesinOnline(sn);
     }
   }
+
+  static async resetMesinStatus(): Promise<void> {
+    const mesinLastConnectedCount = await tedis.scard(LIST_ONLINE);
+
+    console.log('Reset all mesin status to offline');
+
+    if (mesinLastConnectedCount > 0) {
+      await tedis.spop(LIST_ONLINE, mesinLastConnectedCount);
+    }
+
+    await ConnectedMesin.update(
+      { status: ConnectedMesinStatus.ONLINE },
+      { status: ConnectedMesinStatus.OFLINE }
+    );
+  }
 }

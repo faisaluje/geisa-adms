@@ -13,7 +13,7 @@ import { MesinRunnerDto } from './dtos/mesin-runner.dto';
 const app = express();
 app.use(bodyParser.text());
 
-app.get('/', async (req, res) => {
+app.get('/', async (_req, res) => {
   const connectedMesins = await tedis.smembers('online');
 
   res.send(connectedMesins);

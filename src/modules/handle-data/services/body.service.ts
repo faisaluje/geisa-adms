@@ -4,8 +4,8 @@ import { Mesin } from '../../../entities/mesin.entity';
 import { MesinUserDto } from '../../../dtos/mesin-user.dto';
 import { BadRequestError } from '../../../modules/errors/bad-request-error';
 import { MappingService } from './mapping.service';
-import { MesinLogDto } from 'src/dtos/mesin-log.dto';
-import { OPERLOG } from 'src/constants';
+import { MesinLogDto } from '../../../dtos/mesin-log.dto';
+import { MesinInfoDto } from 'src/dtos/mesin-info.dto';
 
 export class BodyService {
   static async convertRawToText(req: Request): Promise<string> {
@@ -52,5 +52,21 @@ export class BodyService {
     }
 
     return result;
+  }
+
+  static convertTextToMesinInfo(text: string): MesinInfoDto {
+    const rows = text.split('\n');
+    const result = [];
+
+    if (rows) {
+      rows.forEach((row) => {
+        const cols = row.split('\t');
+        result.push(cols[0]);
+      });
+    }
+
+    const info = MappingService.toInfo(result);
+
+    return info;
   }
 }

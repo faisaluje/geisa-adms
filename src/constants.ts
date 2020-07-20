@@ -4,8 +4,11 @@ export const PORT_DB = 5315;
 export const USER_DB = 'postgres';
 export const PASS_DB = 'g63154';
 export const NAME_DB = 'geisa-management';
-export const SYNC_DB = true;
+export const SYNC_DB = false;
 export const LOGGING_DB = true;
+
+export const URL_REDIS = '128.199.148.246';
+export const PORT_REDIS = 53215;
 
 export const PORT_APP = 8888;
 export const JWT_KEY = 'Q7Z#pbn9N^ZyhiF^WL%7tgz';

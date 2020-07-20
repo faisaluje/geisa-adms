@@ -9,6 +9,7 @@ export class HandshakeService {
     await MesinService.checkMesinExist(sn);
 
     await tedis.sadd(LIST_ONLINE, sn);
+    await tedis.sadd(sn, 'INFO');
 
     let mesin = await ConnectedMesin.findOne({ sn });
     if (!mesin) {

@@ -1,26 +1,9 @@
+import { MesinInfoDto } from 'src/dtos/mesin-info.dto';
 import { MesinLogDto } from 'src/dtos/mesin-log.dto';
 import { Mesin } from 'src/entities/mesin.entity';
 import { MesinUserDto } from '../../../dtos/mesin-user.dto';
 
 export class MappingService {
-  static toObject<T>(
-    plainText: string,
-    mesin: Mesin,
-    dest: (cols: string[]) => T
-  ): T[] {
-    const rows = plainText.split('\n');
-    const result: T[] = [];
-
-    if (rows) {
-      rows.forEach((row) => {
-        const cols = row.split('\t');
-        result.push(dest(cols));
-      });
-    }
-
-    return result;
-  }
-
   static toUser(item: string[], mesin: Mesin): MesinUserDto {
     return {
       mesin,
@@ -41,6 +24,18 @@ export class MappingService {
       status: item[2],
       verify: item[3],
       workcode: item[4],
+    };
+  }
+
+  static toInfo(data: string[]): MesinInfoDto {
+    const vendor = data.find((val) => val.search('OEMVendor') >= 0);
+    const serialNumber = data.find((val) => val.search('SerialNumber') >= 0);
+    const deviceName = data.find((val) => val.search('DeviceName') >= 0);
+
+    return {
+      deviceName: deviceName ? deviceName.split('=')[1] : '-',
+      serialNumber: serialNumber ? serialNumber.split('=')[1] : '-',
+      vendor: vendor ? vendor.split('=')[1] : '-',
     };
   }
 }

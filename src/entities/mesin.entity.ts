@@ -25,6 +25,9 @@ export class Mesin extends BaseEntity {
   @Column({ nullable: true })
   nama: string;
 
+  @Column({ nullable: true })
+  vendor: string;
+
   @ManyToOne(() => Instansi, (instansi) => instansi.mesins)
   instansi: Instansi;
 

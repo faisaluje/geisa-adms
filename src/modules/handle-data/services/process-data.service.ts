@@ -63,4 +63,18 @@ export class ProcessDataService {
       });
     }
   }
+
+  static async updateMesinInfo(content: string): Promise<void> {
+    const mesinInfo = BodyService.convertTextToMesinInfo(content);
+
+    await Mesin.update(
+      {
+        sn: mesinInfo.serialNumber,
+      },
+      {
+        nama: mesinInfo.deviceName,
+        vendor: mesinInfo.vendor,
+      }
+    );
+  }
 }

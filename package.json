@@ -16,7 +16,9 @@
     "express-validator": "^6.6.0",
     "pg": "^8.3.0",
     "postgres": "^1.0.2",
+    "raw-body": "^2.4.1",
     "reflect-metadata": "^0.1.13",
+    "tedis": "^0.1.12",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {

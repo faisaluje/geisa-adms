@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -14,7 +15,7 @@ import { Pengguna } from './pengguna.entity';
 
 @Index(['sn'], { unique: true })
 @Entity('mesin')
-export class Mesin {
+export class Mesin extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

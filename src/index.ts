@@ -1,23 +1,29 @@
-import { createConnection, getConnection } from 'typeorm';
+import { Tedis } from 'tedis';
+import { createConnection } from 'typeorm';
 import app from './app';
 import { typeOrmConfig } from './config/typeorm.config';
-import { JWT_KEY, PORT_APP } from './constants';
+import { PORT_APP } from './constants';
 
+let tedis: Tedis;
 const start = async () => {
-  if (!process.env.JWT_KEY && !JWT_KEY) {
-    throw new Error('JWT_KEY undefined');
-  }
-
   try {
     await createConnection(typeOrmConfig);
+    tedis = new Tedis({
+      host: '127.0.0.1',
+      port: 6379,
+    });
+
+    tedis.on('connect', async () => {
+      app.listen(PORT_APP, () => {
+        console.log(`Listening on port ${PORT_APP}`);
+      });
+    });
   } catch (e) {
     console.error(e.message);
     throw new Error('Cannot connect to DB, exiting');
   }
-
-  app.listen(PORT_APP, () => {
-    console.log(`Listening on port ${PORT_APP}`);
-  });
 };
 
 start();
+
+export { tedis };

@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { ATTLOG, OPERLOG } from '../../../constants';
 import { MesinUsers } from '../../../entities/mesin-users.entity';
 import { Mesin } from '../../../entities/mesin.entity';
-import { createQueryBuilder, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { BodyService } from './body.service';
 import { MesinLogs } from '../../../entities/mesin-logs.entity';
 import { socketIo } from '../../..';
@@ -81,6 +81,15 @@ export class ProcessDataService {
     }
   }
 
+  static async processDeleteAllUsers(sn: string): Promise<void> {
+    try {
+      const mesin = await Mesin.findOne({ sn });
+      MesinUsers.delete({ mesin });
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
+
   static async processData(req: Request): Promise<void> {
     const sn = req.query.SN as string;
     const text = await BodyService.convertRawToText(req);
@@ -110,7 +119,9 @@ export class ProcessDataService {
         this.processDeleteUser(text, sn);
       }
 
-      console.log(text);
+      if (text.search('OPLOG 13') >= 0) {
+        this.processDeleteAllUsers(sn);
+      }
     }
   }
 

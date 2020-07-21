@@ -1,7 +1,7 @@
-import { MesinInfoDto } from 'src/dtos/mesin-info.dto';
-import { MesinLogDto } from 'src/dtos/mesin-log.dto';
-import { Mesin } from 'src/entities/mesin.entity';
+import { Mesin } from '../../../entities/mesin.entity';
 import { MesinUserDto } from '../../../dtos/mesin-user.dto';
+import { MesinLogDto } from '../../../dtos/mesin-log.dto';
+import { MesinInfoDto } from '../../../dtos/mesin-info.dto';
 
 export class MappingService {
   static toUser(item: string[], mesin: Mesin): MesinUserDto {

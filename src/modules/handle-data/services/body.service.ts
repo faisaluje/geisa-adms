@@ -48,7 +48,7 @@ export class BodyService {
 
   static convertTextToMesinLogs(text: string, mesin: Mesin): MesinLogDto[] {
     const rows = text.split('\n');
-    const logs = [];
+    const logs: MesinLogDto[] = [];
 
     if (rows) {
       rows.forEach((row) => {
@@ -62,7 +62,7 @@ export class BodyService {
 
   static convertTextToMesinInfo(text: string): MesinInfoDto {
     const rows = text.split('\n');
-    const result = [];
+    const result: string[] = [];
 
     if (rows) {
       rows.forEach((row) => {

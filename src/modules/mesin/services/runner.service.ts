@@ -1,6 +1,6 @@
-import { mesinRunner } from '../../../app';
+import { mesinRunner } from '../../..';
 import { TIMEOUT } from '../../../constants';
-import { MesinService } from './mesin.service';
+import { MesinStatusService } from '../../connected-mesin/services/mesin-status.service';
 
 export class RunnerService {
   static initRunner(sn: string): void {
@@ -8,15 +8,14 @@ export class RunnerService {
     if (!runner) {
       runner = {
         sn,
-        timeout: null,
       };
       mesinRunner.push(runner);
     } else {
-      clearTimeout(runner.timeout);
+      clearTimeout(runner.timeout!);
     }
 
     runner.timeout = setTimeout(() => {
-      MesinService.setMesinOffline(sn);
+      MesinStatusService.setMesinOffline(sn);
     }, TIMEOUT);
   }
 }

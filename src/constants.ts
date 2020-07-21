@@ -10,7 +10,7 @@ export const LOGGING_DB = true;
 export const URL_REDIS = '128.199.148.246';
 export const PORT_REDIS = 53215;
 
-export const PORT_APP = process.env.PORT || 8888;
+export const PORT_APP = process.env.PORT || 8315;
 export const JWT_KEY = 'Q7Z#pbn9N^ZyhiF^WL%7tgz';
 export const URL_FRONTEND = ['http://localhost:3000', 'http://localhost:5000'];
 

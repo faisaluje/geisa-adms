@@ -1,5 +1,6 @@
 import express from 'express';
 import { RunnerService } from '../../../modules/mesin/services/runner.service';
+import { ConnectedMesinService } from '../../connected-mesin/services/connected-mesin.service';
 import { BadRequestError } from '../../errors/bad-request-error';
 import { HandshakeService } from '../services/handshake.service';
 
@@ -22,7 +23,7 @@ router.get('/iclock/cdata', async (req, res) => {
   console.log(req.query);
 
   try {
-    await HandshakeService.upsertConnectedMesin(SN as string);
+    await ConnectedMesinService.upsertConnectedMesin(SN as string);
     RunnerService.initRunner(SN as string);
 
     res.header('Content-Type', 'text/plain').send(resHandshake(SN as string));

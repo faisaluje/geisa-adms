@@ -5,7 +5,7 @@ import { MesinUserDto } from '../../../dtos/mesin-user.dto';
 import { BadRequestError } from '../../../modules/errors/bad-request-error';
 import { MappingService } from './mapping.service';
 import { MesinLogDto } from '../../../dtos/mesin-log.dto';
-import { MesinInfoDto } from 'src/dtos/mesin-info.dto';
+import { MesinInfoDto } from '../../../dtos/mesin-info.dto';
 
 export class BodyService {
   static async convertRawToText(req: Request): Promise<string> {

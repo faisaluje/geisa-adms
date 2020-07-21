@@ -4,17 +4,21 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Mesin } from './mesin.entity';
 
 @Entity('connected_mesin')
 export class ConnectedMesin extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  sn: string;
+  @OneToOne(() => Mesin, (mesin) => mesin.connectedMesin)
+  @JoinColumn()
+  mesin: Mesin;
 
   @Column({
     type: 'enum',
@@ -30,9 +34,9 @@ export class ConnectedMesin extends BaseEntity {
   @UpdateDateColumn()
   updatedStatusAt?: Date;
 
-  constructor(sn: string) {
+  constructor(mesin: Mesin) {
     super();
 
-    this.sn = sn;
+    this.mesin = mesin;
   }
 }

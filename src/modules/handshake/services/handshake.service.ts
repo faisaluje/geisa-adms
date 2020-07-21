@@ -6,20 +6,20 @@ import { LIST_ONLINE } from '../../../constants';
 
 export class HandshakeService {
   static async upsertConnectedMesin(sn: string): Promise<void> {
-    await MesinService.checkMesinExist(sn);
+    const mesin = await MesinService.getMesinExist(sn);
 
     await tedis.sadd(LIST_ONLINE, sn);
     await tedis.sadd(sn, 'INFO');
 
-    let mesin = await ConnectedMesin.findOne({ sn });
-    if (!mesin) {
-      mesin = new ConnectedMesin(sn);
+    let connectedMesin = await ConnectedMesin.findOne({ mesin });
+    if (!connectedMesin) {
+      connectedMesin = new ConnectedMesin(mesin);
     }
 
-    mesin.status = ConnectedMesinStatus.ONLINE;
+    connectedMesin.status = ConnectedMesinStatus.ONLINE;
 
     console.log(`mesin ${sn} set to online`);
 
-    await mesin.save();
+    await connectedMesin.save();
   }
 }

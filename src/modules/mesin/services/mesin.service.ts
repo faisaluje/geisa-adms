@@ -4,31 +4,37 @@ import { tedis } from '../../../index';
 import { ConnectedMesin } from '../../../entities/connected-mesin.entity';
 import { ConnectedMesinStatus } from '../../../enums/connected-mesin-status.enum';
 import { LIST_ONLINE } from '../../../constants';
+import { getConnection } from 'typeorm';
+import { NotFoundError } from 'src/modules/errors/not-found-error';
 
 export class MesinService {
-  static async checkMesinExist(sn: string): Promise<void> {
+  static async getMesinExist(sn: string): Promise<Mesin> {
     const mesin = await Mesin.findOne({ sn });
     if (!mesin) throw new BadRequestError(`SN ${sn} belum terdaftar`);
+
+    return mesin;
+  }
+
+  static async setMesinStatus(
+    sn: string,
+    statusMesin: ConnectedMesinStatus
+  ): Promise<void> {
+    const mesin = await Mesin.findOne({ sn });
+    if (!mesin) throw new NotFoundError();
+
+    await ConnectedMesin.update({ mesin }, { status: statusMesin });
   }
 
   static async setMesinOffline(sn: string): Promise<void> {
     await tedis.srem(LIST_ONLINE, sn);
-
-    await ConnectedMesin.update(
-      { sn },
-      { status: ConnectedMesinStatus.OFLINE }
-    );
+    await this.setMesinStatus(sn, ConnectedMesinStatus.OFLINE);
 
     console.log(`Mesin ${sn} set to offline`);
   }
 
   static async setMesinOnline(sn: string): Promise<void> {
     await tedis.sadd(LIST_ONLINE, sn);
-
-    await ConnectedMesin.update(
-      { sn },
-      { status: ConnectedMesinStatus.ONLINE }
-    );
+    await this.setMesinStatus(sn, ConnectedMesinStatus.ONLINE);
 
     console.log(`Mesin ${sn} set to online`);
   }

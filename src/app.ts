@@ -7,22 +7,18 @@ import { indexHandshakeRouter } from './modules/handshake/routes';
 import { indexGetRequestRouter } from './modules/get-request/routes';
 import { postRequestDataRouter } from './modules/handle-data/routes/post';
 import { indexHandleCmdRouter } from './modules/handle-cmd/routes';
-import { tedis } from './index';
 import { MesinRunnerDto } from './dtos/mesin-runner.dto';
+import { indexRouter } from './modules/connected-mesin/routes';
 
 const app = express();
 app.use(bodyParser.text());
-
-app.get('/', async (_req, res) => {
-  const connectedMesins = await tedis.smembers('online');
-
-  res.send(connectedMesins);
-});
 
 app.use(indexHandshakeRouter);
 app.use(indexGetRequestRouter);
 app.use(postRequestDataRouter);
 app.use(indexHandleCmdRouter);
+
+app.use(indexRouter);
 
 app.use(errorHandler);
 

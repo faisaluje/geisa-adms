@@ -6,11 +6,15 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ConnectedMesin } from './connected-mesin.entity';
 
 import { Instansi } from './instansi.entity';
+import { MesinUsers } from './mesin-users.entity';
 import { Pengguna } from './pengguna.entity';
 
 @Index(['sn'], { unique: true })
@@ -43,4 +47,10 @@ export class Mesin extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @OneToOne(() => ConnectedMesin, (connectedMesin) => connectedMesin.mesin)
+  connectedMesin: ConnectedMesin;
+
+  @OneToMany(() => MesinUsers, (mesinUsers) => mesinUsers.mesin)
+  users: MesinUsers[];
 }

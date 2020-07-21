@@ -11,7 +11,11 @@
     "baseUrl": "./",
     // "strict": true,
     "incremental": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
   },
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/node_modules/*", "**/*.spec.ts"]
 }

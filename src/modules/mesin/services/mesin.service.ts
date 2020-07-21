@@ -4,8 +4,7 @@ import { tedis } from '../../../index';
 import { ConnectedMesin } from '../../../entities/connected-mesin.entity';
 import { ConnectedMesinStatus } from '../../../enums/connected-mesin-status.enum';
 import { LIST_ONLINE } from '../../../constants';
-import { getConnection } from 'typeorm';
-import { NotFoundError } from 'src/modules/errors/not-found-error';
+import { NotFoundError } from '../../../modules/errors/not-found-error';
 
 export class MesinService {
   static async getMesinExist(sn: string): Promise<Mesin> {

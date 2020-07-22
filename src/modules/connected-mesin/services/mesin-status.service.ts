@@ -1,9 +1,7 @@
-import { socketIo, tedis } from '../../..';
-import { LIST_ONLINE } from '../../../constants';
-import { ConnectedMesin } from '../../../entities/connected-mesin.entity';
-import { Mesin } from '../../../entities/mesin.entity';
-import { ConnectedMesinStatus } from '../../../enums/connected-mesin-status.enum';
-import { NotFoundError } from '../../errors/not-found-error';
+import { ConnectedMesin, ConnectedMesinStatus, Mesin, NotFoundError } from '@geisa/common'
+
+import { socketIo, tedis } from '../../..'
+import { LIST_ONLINE } from '../../../constants'
 
 export class MesinStatusService {
   static async setMesinStatus(

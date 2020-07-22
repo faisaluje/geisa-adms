@@ -1,20 +1,21 @@
-import 'express-async-errors';
-import express from 'express';
-import SocketIo from 'socket.io';
-import { createServer, Server } from 'http';
-import { createConnection } from 'typeorm';
-import { typeOrmConfig } from './config/typeorm.config';
-import { Tedis } from 'tedis';
-import { PORT_APP, PORT_REDIS, URL_REDIS } from './constants';
-import bodyParser from 'body-parser';
-import { indexHandshakeRouter } from './modules/handshake/routes';
-import { indexGetRequestRouter } from './modules/get-request/routes';
-import { postRequestDataRouter } from './modules/handle-data/routes/post';
-import { indexHandleCmdRouter } from './modules/handle-cmd/routes';
-import { indexRouter } from './modules/connected-mesin/routes';
-import { errorHandler } from './middlewares/error-handler.middleware';
-import { SocketEvents } from './enums/socket-events.enum';
-import { MesinStatusService } from './modules/connected-mesin/services/mesin-status.service';
+import 'express-async-errors'
+
+import { db, errorHandler } from '@geisa/common'
+import bodyParser from 'body-parser'
+import express from 'express'
+import { createServer, Server } from 'http'
+import SocketIo from 'socket.io'
+import { Tedis } from 'tedis'
+
+import { typeOrmConfig } from './config/typeorm.config'
+import { PORT_APP, PORT_REDIS, URL_REDIS } from './constants'
+import { indexRouter } from './modules/connected-mesin/routes'
+import { MesinStatusService } from './modules/connected-mesin/services/mesin-status.service'
+import { indexGetRequestRouter } from './modules/get-request/routes'
+import { indexHandleCmdRouter } from './modules/handle-cmd/routes'
+import { postRequestDataRouter } from './modules/handle-data/routes/post'
+import { indexHandshakeRouter } from './modules/handshake/routes'
+import { SocketEvents } from './modules/types/socket-events.types'
 
 export class AdmsServer {
   private _app: express.Application;
@@ -57,7 +58,7 @@ export class AdmsServer {
 
   async listen(): Promise<void> {
     try {
-      await createConnection(typeOrmConfig);
+      await db.createConnection(typeOrmConfig);
 
       await MesinStatusService.resetMesinStatus();
       this._server.listen(PORT_APP, () => {

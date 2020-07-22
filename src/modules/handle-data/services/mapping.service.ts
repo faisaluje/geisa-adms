@@ -1,7 +1,4 @@
-import { MesinInfoDto } from '../../../dtos/mesin-info.dto'
-import { MesinLogDto } from '../../../dtos/mesin-log.dto'
-import { MesinUserDto } from '../../../dtos/mesin-user.dto'
-import { Mesin } from '../../../entities/mesin.entity'
+import { Mesin, MesinInfoDto, MesinLogDto, MesinUserDto } from '@geisa/common'
 
 export class MappingService {
   static toUser(item: string[], mesin: Mesin): MesinUserDto {

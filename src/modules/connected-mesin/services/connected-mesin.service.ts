@@ -1,10 +1,9 @@
-import { tedis, socketIo } from '../../..';
-import { LIST_ONLINE } from '../../../constants';
-import { ConnectedMesin } from '../../../entities/connected-mesin.entity';
-import { Mesin } from '../../../entities/mesin.entity';
-import { ConnectedMesinStatus } from '../../../enums/connected-mesin-status.enum';
-import { SocketEvents } from '../../../enums/socket-events.enum';
-import { MesinService } from '../../mesin/services/mesin.service';
+import { ConnectedMesin, ConnectedMesinStatus, Mesin } from '@geisa/common'
+
+import { socketIo, tedis } from '../../..'
+import { LIST_ONLINE } from '../../../constants'
+import { MesinService } from '../../mesin/services/mesin.service'
+import { SocketEvents } from '../../types/socket-events.types'
 
 export class ConnectedMesinService {
   static async getConnectedMesins(): Promise<Mesin[]> {

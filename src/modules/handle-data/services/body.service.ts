@@ -1,11 +1,7 @@
+import { BadRequestError, Mesin, MesinInfoDto, MesinLogDto, MesinUserDto } from '@geisa/common'
 import { Request } from 'express'
 import rawBody from 'raw-body'
 
-import { MesinInfoDto } from '../../../dtos/mesin-info.dto'
-import { MesinLogDto } from '../../../dtos/mesin-log.dto'
-import { MesinUserDto } from '../../../dtos/mesin-user.dto'
-import { Mesin } from '../../../entities/mesin.entity'
-import { BadRequestError } from '../../../modules/errors/bad-request-error'
 import { MappingService } from './mapping.service'
 
 export class BodyService {

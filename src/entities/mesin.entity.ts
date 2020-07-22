@@ -10,12 +10,12 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { ConnectedMesin } from './connected-mesin.entity';
+} from 'typeorm'
 
-import { Instansi } from './instansi.entity';
-import { MesinUsers } from './mesin-users.entity';
-import { Pengguna } from './pengguna.entity';
+import { ConnectedMesin } from './connected-mesin.entity'
+import { Instansi } from './instansi.entity'
+import { MesinUsers } from './mesin-users.entity'
+import { Pengguna } from './pengguna.entity'
 
 @Index(['sn'], { unique: true })
 @Entity('mesin')

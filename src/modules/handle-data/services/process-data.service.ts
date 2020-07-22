@@ -1,16 +1,18 @@
-import { Request } from 'express';
-import { ATTLOG, OPERLOG } from '../../../constants';
-import { MesinUsers } from '../../../entities/mesin-users.entity';
-import { Mesin } from '../../../entities/mesin.entity';
-import { getConnection } from 'typeorm';
-import { BodyService } from './body.service';
-import { MesinLogs } from '../../../entities/mesin-logs.entity';
-import { socketIo } from '../../..';
-import { SocketEvents } from '../../../enums/socket-events.enum';
+import { Request } from 'express'
+import { getConnection, In } from 'typeorm'
+
+import { socketIo } from '../../..'
+import { ATTLOG, OPERLOG } from '../../../constants'
+import { MesinLogs } from '../../../entities/mesin-logs.entity'
+import { MesinUsers } from '../../../entities/mesin-users.entity'
+import { Mesin } from '../../../entities/mesin.entity'
+import { SocketEvents } from '../../../enums/socket-events.enum'
+import { BodyService } from './body.service'
+import { MappingService } from './mapping.service'
 
 export class ProcessDataService {
-  static processMesinLogs(text: string, mesin: Mesin): void {
-    const object = BodyService.convertTextToMesinLogs(text, mesin);
+  static processMesinLogs(text: string, sn: string): void {
+    const object = BodyService.convertTextToMesinLogs(text, sn);
 
     if (object.length > 0) {
       getConnection()
@@ -18,7 +20,7 @@ export class ProcessDataService {
         .insert()
         .into(MesinLogs)
         .values(object)
-        .onConflict('("time", "pin","mesinId") DO NOTHING')
+        .onConflict('("time", "pin","sn") DO NOTHING')
         .execute()
         .then(() => {
           socketIo.emit(SocketEvents.LOGS, object);
@@ -56,12 +58,12 @@ export class ProcessDataService {
     text: string,
     sn: string
   ): Promise<void> {
-    const content = text.split('\t');
-    const pin = content[1];
-    if (pin) {
+    const userPins = MappingService.toUserPins(text);
+
+    if (userPins.length > 0) {
       try {
         const mesin = await Mesin.findOne({ sn });
-        MesinUsers.update({ mesin, pin }, { password: '' });
+        MesinUsers.update({ mesin, pin: In(userPins) }, { password: '' });
       } catch (e) {
         console.error(e.message);
       }
@@ -69,12 +71,14 @@ export class ProcessDataService {
   }
 
   static async processDeleteUser(text: string, sn: string): Promise<void> {
-    const content = text.split('\t');
-    const pin = content[1];
-    if (pin) {
+    const userPins = MappingService.toUserPins(text);
+
+    if (userPins.length > 0) {
       try {
         const mesin = await Mesin.findOne({ sn });
-        MesinUsers.delete({ mesin, pin });
+        MesinUsers.delete({ mesin, pin: In(userPins) }).then((result) => {
+          socketIo.emit(SocketEvents.DELETED_USER, { sn, userPins });
+        });
       } catch (e) {
         console.error(e.message);
       }
@@ -84,7 +88,9 @@ export class ProcessDataService {
   static async processDeleteAllUsers(sn: string): Promise<void> {
     try {
       const mesin = await Mesin.findOne({ sn });
-      MesinUsers.delete({ mesin });
+      MesinUsers.delete({ mesin }).then(() => {
+        socketIo.emit(SocketEvents.DELETED_ALL_USERS, sn);
+      });
     } catch (e) {
       console.error(e.message);
     }
@@ -95,11 +101,7 @@ export class ProcessDataService {
     const text = await BodyService.convertRawToText(req);
 
     if (req.query.table === ATTLOG) {
-      Mesin.findOne({ sn }).then((mesin) => {
-        if (mesin) {
-          this.processMesinLogs(text, mesin);
-        }
-      });
+      this.processMesinLogs(text, sn);
     }
 
     if (req.query.table === OPERLOG) {

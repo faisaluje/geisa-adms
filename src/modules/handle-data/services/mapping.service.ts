@@ -1,7 +1,7 @@
-import { Mesin } from '../../../entities/mesin.entity';
-import { MesinUserDto } from '../../../dtos/mesin-user.dto';
-import { MesinLogDto } from '../../../dtos/mesin-log.dto';
-import { MesinInfoDto } from '../../../dtos/mesin-info.dto';
+import { MesinInfoDto } from '../../../dtos/mesin-info.dto'
+import { MesinLogDto } from '../../../dtos/mesin-log.dto'
+import { MesinUserDto } from '../../../dtos/mesin-user.dto'
+import { Mesin } from '../../../entities/mesin.entity'
 
 export class MappingService {
   static toUser(item: string[], mesin: Mesin): MesinUserDto {
@@ -16,9 +16,9 @@ export class MappingService {
     };
   }
 
-  static toLog(item: string[], mesin: Mesin): MesinLogDto {
+  static toLog(item: string[], sn: string): MesinLogDto {
     return {
-      mesin,
+      sn,
       pin: item[0],
       time: new Date(item[1]),
       status: item[2],
@@ -37,5 +37,18 @@ export class MappingService {
       serialNumber: serialNumber ? serialNumber.split('=')[1] : '-',
       vendor: vendor ? vendor.split('=')[1] : '-',
     };
+  }
+
+  static toUserPins(text: string): string[] {
+    const rows = text.split('\n');
+    const pins: string[] = [];
+    rows.forEach((row) => {
+      if (row.search('OPLOG 9') >= 0) {
+        const cols = row.split('\t');
+        pins.push(cols[1]);
+      }
+    });
+
+    return pins;
   }
 }

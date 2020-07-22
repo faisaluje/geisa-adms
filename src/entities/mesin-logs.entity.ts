@@ -1,26 +1,14 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Mesin } from './mesin.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('mesin_logs')
-@Index(['time', 'pin', 'mesinId'], { unique: true })
+@Index(['time', 'pin', 'sn'], { unique: true })
 export class MesinLogs extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Mesin)
-  mesin: Mesin;
-
   @Column()
-  mesinId: string;
+  @Index()
+  sn: string;
 
   @Column()
   pin: string;

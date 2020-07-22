@@ -1,11 +1,12 @@
-import { Request } from 'express';
-import rawBody from 'raw-body';
-import { Mesin } from '../../../entities/mesin.entity';
-import { MesinUserDto } from '../../../dtos/mesin-user.dto';
-import { BadRequestError } from '../../../modules/errors/bad-request-error';
-import { MappingService } from './mapping.service';
-import { MesinLogDto } from '../../../dtos/mesin-log.dto';
-import { MesinInfoDto } from '../../../dtos/mesin-info.dto';
+import { Request } from 'express'
+import rawBody from 'raw-body'
+
+import { MesinInfoDto } from '../../../dtos/mesin-info.dto'
+import { MesinLogDto } from '../../../dtos/mesin-log.dto'
+import { MesinUserDto } from '../../../dtos/mesin-user.dto'
+import { Mesin } from '../../../entities/mesin.entity'
+import { BadRequestError } from '../../../modules/errors/bad-request-error'
+import { MappingService } from './mapping.service'
 
 export class BodyService {
   static async convertRawToText(req: Request): Promise<string> {
@@ -46,14 +47,14 @@ export class BodyService {
     return users;
   }
 
-  static convertTextToMesinLogs(text: string, mesin: Mesin): MesinLogDto[] {
+  static convertTextToMesinLogs(text: string, sn: string): MesinLogDto[] {
     const rows = text.split('\n');
     const logs: MesinLogDto[] = [];
 
     if (rows) {
       rows.forEach((row) => {
         const cols = row.split('\t');
-        logs.push(MappingService.toLog(cols, mesin));
+        logs.push(MappingService.toLog(cols, sn));
       });
     }
 

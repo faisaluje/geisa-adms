@@ -2,6 +2,7 @@ import { ConnectedMesin, ConnectedMesinStatus, Mesin, NotFoundError } from '@gei
 
 import { socketIo, tedis } from '../../..'
 import { LIST_ONLINE } from '../../../constants'
+import { SocketEvents } from '../../types/socket-events.types'
 
 export class MesinStatusService {
   static async setMesinStatus(
@@ -12,7 +13,7 @@ export class MesinStatusService {
     if (!mesin) throw new NotFoundError();
 
     await ConnectedMesin.update({ mesin }, { status: statusMesin });
-    socketIo.emit('status-mesin', { sn, status: statusMesin });
+    socketIo.emit(SocketEvents.STATUS_MESIN, { sn, status: statusMesin });
   }
 
   static async setMesinOffline(sn: string): Promise<void> {

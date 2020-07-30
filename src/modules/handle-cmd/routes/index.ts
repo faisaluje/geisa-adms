@@ -26,11 +26,11 @@ router.post('/iclock/devicecmd', async (req, res) => {
     if (content.search('&Return=0&CMD=DATA') >= 0) {
       const id = text.split('&')[0].substr(3);
       if (id !== '123') {
-        await CommandService.updateStatusCommand(sn, id);
+        CommandService.updateStatusCommand(sn, id);
       }
     }
   }
-
+  console.log('iclock/devicecmd', "Send: 'OK'");
   res.header('Content-Type', 'text/plain').send('OK');
 });
 

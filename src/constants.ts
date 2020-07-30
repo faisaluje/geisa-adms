@@ -5,7 +5,7 @@ export const USER_DB = 'postgres';
 export const PASS_DB = 'g63154';
 export const NAME_DB = 'geisa-management';
 export const SYNC_DB = false;
-export const LOGGING_DB = true;
+export const LOGGING_DB = false;
 
 export const URL_REDIS = '128.199.148.246';
 export const PORT_REDIS = 53215;

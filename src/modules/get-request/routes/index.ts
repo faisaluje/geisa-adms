@@ -1,7 +1,8 @@
-import express from 'express';
-import { CommandService } from '../../handle-cmd/service/command.service';
-import { RunnerService } from '../../../modules/mesin/services/runner.service';
-import { MesinStatusService } from '../../connected-mesin/services/mesin-status.service';
+import express from 'express'
+
+import { RunnerService } from '../../../modules/mesin/services/runner.service'
+import { MesinStatusService } from '../../connected-mesin/services/mesin-status.service'
+import { CommandService } from '../../handle-cmd/service/command.service'
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.get('/iclock/getrequest', async (req, res) => {
   RunnerService.initRunner(req.query.SN as string);
   const cmd = await CommandService.getCommands(sn);
 
+  console.log('/iclock/getrequest', `Send: ${cmd || "'OK'"}`);
   res.header('Content-Type', 'text/plain').send(cmd || 'OK');
   // proses = true;
 });

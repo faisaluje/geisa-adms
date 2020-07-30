@@ -27,8 +27,7 @@ export class CommandService {
       try {
         await command.save();
         await queryRunner.query(
-          `UPDATE ${command.tableName} SET status = 'aktif' WHERE id = '${command.tableId}'`,
-          [command.tableName, command.tableId]
+          `UPDATE ${command.tableName} SET status = 'aktif' WHERE id = '${command.tableId}'`
         );
         await queryRunner.commitTransaction();
         await queryRunner.release();

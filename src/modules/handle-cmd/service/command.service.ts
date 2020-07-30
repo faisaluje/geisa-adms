@@ -26,10 +26,10 @@ export class CommandService {
 
       try {
         await command.save();
-        await queryRunner.query('UPDATE ? SET password 112233 WHERE id = ?', [
-          command.tableName,
-          command.tableId,
-        ]);
+        await queryRunner.query(
+          `UPDATE ${command.tableName} SET status = 'aktif' WHERE id = ${command.tableId}`,
+          [command.tableName, command.tableId]
+        );
         await queryRunner.commitTransaction();
         await queryRunner.release();
       } catch (e) {

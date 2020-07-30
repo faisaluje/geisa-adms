@@ -34,5 +34,5 @@ export class Command extends BaseEntity {
   updatedAt?: Date;
 
   @Column()
-  createdBy?: string;
+  createdById?: string;
 }

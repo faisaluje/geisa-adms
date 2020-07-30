@@ -17,7 +17,6 @@ router.get('/iclock/getrequest', async (req, res) => {
   RunnerService.initRunner(req.query.SN as string);
   const cmd = await CommandService.getCommands(sn);
 
-  console.log('/iclock/getrequest', `Send: ${cmd || "'OK'"}`);
   res.header('Content-Type', 'text/plain').send(cmd || 'OK');
   // proses = true;
 });

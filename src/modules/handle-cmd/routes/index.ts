@@ -17,7 +17,6 @@ router.post('/iclock/devicecmd', async (req, res) => {
     const text = raw.toString().trim();
 
     let content = text;
-    console.log(content);
 
     if (content.search('DeviceName=') >= 0) {
       CommandService.deleteCommand(sn, CMDINFO);
@@ -33,7 +32,6 @@ router.post('/iclock/devicecmd', async (req, res) => {
       }
     }
   }
-  console.log('iclock/devicecmd', "Send: 'OK'");
   res.header('Content-Type', 'text/plain').send('OK');
 });
 

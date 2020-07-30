@@ -25,7 +25,9 @@ router.post('/iclock/devicecmd', async (req, res) => {
 
     if (content.search('&Return=0&CMD=DATA') >= 0) {
       const id = text.split('&')[0].substr(3);
-      await CommandService.updateStatusCommand(sn, id);
+      if (id !== '123') {
+        await CommandService.updateStatusCommand(sn, id);
+      }
     }
   }
 

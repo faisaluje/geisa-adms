@@ -8,7 +8,11 @@ import { BadRequestError } from '../../errors/bad-request-error'
 export class CommandService {
   static async getCommands(sn: string): Promise<string> {
     const commands = await tedis.smembers(sn);
-    return commands.join('\n');
+    if (commands.length > 0) {
+      return commands.join('\n');
+    } else {
+      return '';
+    }
   }
 
   static async deleteCommand(sn: string, cmd: string): Promise<void> {

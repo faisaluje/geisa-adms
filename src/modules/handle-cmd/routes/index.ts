@@ -1,6 +1,7 @@
 import express from 'express'
 import getRawBody from 'raw-body'
 
+import { tedis } from '../../..'
 import { CMDINFO } from '../../../constants'
 import { ProcessDataService } from '../../../modules/handle-data/services/process-data.service'
 import { CommandService } from '../service/command.service'
@@ -27,6 +28,8 @@ router.post('/iclock/devicecmd', async (req, res) => {
       const id = text.split('&')[0].substr(3);
       if (id !== '123') {
         CommandService.updateStatusCommand(sn, id);
+      } else {
+        tedis.spop(sn, 1);
       }
     }
   }

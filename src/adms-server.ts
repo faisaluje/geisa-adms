@@ -1,6 +1,5 @@
 import 'express-async-errors'
 
-import { db, errorHandler } from '@geisa/common'
 import bodyParser from 'body-parser'
 import express from 'express'
 import { createServer, Server } from 'http'
@@ -9,13 +8,15 @@ import { Tedis } from 'tedis'
 
 import { typeOrmConfig } from './config/typeorm.config'
 import { PORT_APP, PORT_REDIS, URL_REDIS } from './constants'
+import { errorHandler } from './middlewares/error-handler.middleware'
 import { indexRouter } from './modules/connected-mesin/routes'
 import { MesinStatusService } from './modules/connected-mesin/services/mesin-status.service'
+import { db } from './modules/db/db'
 import { indexGetRequestRouter } from './modules/get-request/routes'
 import { indexHandleCmdRouter } from './modules/handle-cmd/routes'
 import { postRequestDataRouter } from './modules/handle-data/routes/post'
 import { indexHandshakeRouter } from './modules/handshake/routes'
-import { SocketEvents } from './modules/types/socket-events.types'
+import { SocketEvents } from './types/socket-events.types'
 
 export class AdmsServer {
   private _app: express.Application;

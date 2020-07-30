@@ -1,10 +1,12 @@
-import { Mesin, MesinLogs, MesinUsers } from '@geisa/common'
 import { Request } from 'express'
 import { getConnection, In } from 'typeorm'
 
 import { socketIo } from '../../..'
 import { ATTLOG, OPERLOG } from '../../../constants'
-import { SocketEvents } from '../../types/socket-events.types'
+import { MesinLogs } from '../../../entities/mesin-logs.entity'
+import { MesinUsers } from '../../../entities/mesin-users.entity'
+import { Mesin } from '../../../entities/mesin.entity'
+import { SocketEvents } from '../../../types/socket-events.types'
 import { BodyService } from './body.service'
 import { MappingService } from './mapping.service'
 

@@ -1,8 +1,8 @@
-import { BadRequestError } from '@geisa/common'
 import express from 'express'
 
 import { RunnerService } from '../../../modules/mesin/services/runner.service'
 import { ConnectedMesinService } from '../../connected-mesin/services/connected-mesin.service'
+import { BadRequestError } from '../../errors/bad-request-error'
 
 const router = express.Router();
 

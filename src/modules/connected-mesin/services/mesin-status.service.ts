@@ -1,8 +1,10 @@
-import { ConnectedMesin, ConnectedMesinStatus, Mesin, NotFoundError } from '@geisa/common'
-
 import { socketIo, tedis } from '../../..'
 import { LIST_ONLINE } from '../../../constants'
-import { SocketEvents } from '../../types/socket-events.types'
+import { ConnectedMesin } from '../../../entities/connected-mesin.entity'
+import { Mesin } from '../../../entities/mesin.entity'
+import { ConnectedMesinStatus } from '../../../types/connected-mesin-status.types'
+import { SocketEvents } from '../../../types/socket-events.types'
+import { NotFoundError } from '../../errors/not-found-error'
 
 export class MesinStatusService {
   static async setMesinStatus(

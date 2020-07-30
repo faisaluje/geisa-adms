@@ -1,6 +1,5 @@
-import { ConnectionOptionsDto } from '@geisa/common'
-
 import { LOGGING_DB, NAME_DB, PASS_DB, PORT_DB, URL_DB, USER_DB } from '../constants'
+import { ConnectionOptionsDto } from '../dtos/connection-options.dto'
 
 export const typeOrmConfig: ConnectionOptionsDto = {
   host: process.env.DB_HOST || URL_DB,

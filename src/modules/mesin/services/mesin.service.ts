@@ -1,4 +1,5 @@
-import { BadRequestError, Mesin } from '@geisa/common'
+import { Mesin } from '../../../entities/mesin.entity'
+import { BadRequestError } from '../../errors/bad-request-error'
 
 export class MesinService {
   static async getMesinExist(sn: string): Promise<Mesin> {

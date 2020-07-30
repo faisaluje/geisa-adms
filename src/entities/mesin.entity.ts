@@ -4,6 +4,8 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -11,6 +13,7 @@ import {
 } from 'typeorm'
 
 import { ConnectedMesin } from './connected-mesin.entity'
+import { Instansi } from './instansi.entity'
 import { MesinUsers } from './mesin-users.entity'
 
 @Index(['sn'], { unique: true })
@@ -28,8 +31,9 @@ export class Mesin extends BaseEntity {
   @Column({ nullable: true })
   vendor: string;
 
-  @Column()
-  instansiId: string;
+  @ManyToOne(() => Instansi, (instansi) => instansi.mesins)
+  @JoinColumn()
+  instansi: Instansi;
 
   @Column()
   tglRegistrasi: Date;

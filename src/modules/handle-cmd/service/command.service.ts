@@ -1,23 +1,43 @@
-import { getRandomString } from '../../../utils';
-import { tedis } from '../../../index';
+import { getConnection } from 'typeorm'
+
+import { tedis } from '../../..'
+import { Command } from '../../../entities/command.entity'
+import { CommandStatus } from '../../../types/command-status.types'
+import { BadRequestError } from '../../errors/bad-request-error'
 
 export class CommandService {
   static async getCommands(sn: string): Promise<string> {
     const commands = await tedis.smembers(sn);
-
-    const commandsForMesin = commands.map((cmd) => {
-      const id = getRandomString(5);
-      return `C:${id}:${cmd.trim()}`;
-    });
-
-    return commandsForMesin.join('\n');
+    return commands.join('\n');
   }
 
-  static async deleteCommands(sn: string): Promise<void> {
-    const commandsCount = await tedis.scard(sn);
+  static async deleteCommand(sn: string, cmd: string): Promise<void> {
+    await tedis.srem(sn, cmd);
+  }
 
-    if (commandsCount > 0) {
-      await tedis.spop(sn, commandsCount);
+  static async updateStatusCommand(sn: string, id: string): Promise<void> {
+    const queryRunner = getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
+
+    const command = await queryRunner.manager.findOne(Command, { sn, id });
+    if (command) {
+      await this.deleteCommand(sn, command.cmd);
+      command.status = CommandStatus.EXECUTED;
+
+      try {
+        await command.save();
+        await queryRunner.query('UPDATE ? SET password 112233 WHERE id = ?', [
+          command.tableName,
+          command.tableId,
+        ]);
+        await queryRunner.commitTransaction();
+        await queryRunner.release();
+      } catch (e) {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+        console.log(e.message);
+        throw new BadRequestError(e.message);
+      }
     }
   }
 }

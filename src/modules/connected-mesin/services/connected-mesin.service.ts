@@ -1,5 +1,5 @@
 import { socketIo, tedis } from '../../..'
-import { LIST_ONLINE } from '../../../constants'
+import { CMDINFO, LIST_ONLINE } from '../../../constants'
 import { ConnectedMesin } from '../../../entities/connected-mesin.entity'
 import { Mesin } from '../../../entities/mesin.entity'
 import { ConnectedMesinStatus } from '../../../types/connected-mesin-status.types'
@@ -19,7 +19,7 @@ export class ConnectedMesinService {
     const mesin = await MesinService.getMesinExist(sn);
 
     await tedis.sadd(LIST_ONLINE, sn);
-    await tedis.sadd(sn, 'INFO');
+    await tedis.sadd(sn, CMDINFO);
 
     let connectedMesin = await ConnectedMesin.findOne({ mesin });
     if (!connectedMesin) {

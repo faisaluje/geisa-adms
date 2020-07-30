@@ -16,6 +16,7 @@ export const URL_FRONTEND = ['http://localhost:3000', 'http://localhost:5000'];
 
 export const OPERLOG = 'OPERLOG';
 export const ATTLOG = 'ATTLOG';
+export const CMDINFO = 'C:123:INFO';
 
 export const LIST_ONLINE = 'online';
 export const TIMEOUT = 60000; // a minute

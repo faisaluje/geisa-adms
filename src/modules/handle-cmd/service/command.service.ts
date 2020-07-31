@@ -23,13 +23,13 @@ export class CommandService {
     const queryRunner = getConnection().createQueryRunner();
     await queryRunner.startTransaction();
 
-    const command = await queryRunner.manager.findOne(Command, { sn, id });
+    const command = await Command.findOne({ sn, id });
     if (command) {
       await this.deleteCommand(sn, command.cmd);
       command.status = CommandStatus.EXECUTED;
 
       try {
-        await command.save();
+        await queryRunner.manager.save(command);
         await queryRunner.query(
           `UPDATE ${command.tableName} SET status = 'aktif' WHERE id = '${command.tableId}'`
         );

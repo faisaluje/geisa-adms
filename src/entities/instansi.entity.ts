@@ -33,7 +33,7 @@ export class Instansi {
   jenisInstansiId: number;
 
   @Column()
-  issuedById: string;
+  issuedBy: string;
 
   @OneToMany(() => Mesin, (mesin) => mesin.instansi)
   @JoinColumn()
